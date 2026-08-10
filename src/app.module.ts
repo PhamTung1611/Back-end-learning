@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './components/auth/auth.module';
 import { UsersModule } from './components/users/users.module';
+import { PermissionModule } from './components/permission/permission.module';
+import { RoleModule } from './components/role/role.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { UsersModule } from './components/users/users.module';
 
     AuthModule,
     UsersModule,
+    PermissionModule,
+    RoleModule,
   ],
 
   controllers: [AppController],
