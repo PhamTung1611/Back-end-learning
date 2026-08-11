@@ -41,6 +41,89 @@ export const seedPermissions = async (
       name: 'VIEW_LESSON',
       description: 'Được phép xem bài học',
     },
+    {
+      name: 'CREATE_ROLE',
+      description: 'Được phép tạo role',
+    },
+    {
+      name: 'VIEW_ROLE',
+      description: 'Được phép xem role',
+    },
+    {
+      name: 'UPDATE_ROLE',
+      description: 'Được phép cập nhật role',
+    },
+    {
+      name: 'DELETE_ROLE',
+      description: 'Được phép xóa role',
+    },
+    
+    {
+      name: 'CREATE_PERMISSION',
+      description: 'Được phép tạo permission',
+    },
+    {
+      name: 'VIEW_PERMISSION',
+      description: 'Được phép xem permission',
+    },
+    {
+      name: 'UPDATE_PERMISSION',
+      description: 'Được phép cập nhật permission',
+    },
+    {
+      name: 'DELETE_PERMISSION',
+      description: 'Được phép xóa permission',
+    },
+    {
+      name: 'CREATE_COURSE',
+      description: 'Được phép tạo khóa học',
+    },
+    {
+      name: 'VIEW_COURSE',
+      description: 'Được phép xem khóa học',
+    },
+    {
+      name: 'UPDATE_COURSE',
+      description: 'Được phép cập nhật khóa học',
+    },
+    {
+      name: 'DELETE_COURSE',
+      description: 'Được phép xóa khóa học',
+    },
+    
+    {
+      name: 'CREATE_TOPIC',
+      description: 'Được phép tạo chủ đề',
+    },
+    {
+      name: 'VIEW_TOPIC',
+      description: 'Được phép xem chủ đề',
+    },
+    {
+      name: 'UPDATE_TOPIC',
+      description: 'Được phép cập nhật chủ đề',
+    },
+    {
+      name: 'DELETE_TOPIC',
+      description: 'Được phép xóa chủ đề',
+    },
+    
+    {
+      name: 'CREATE_WORD',
+      description: 'Được phép tạo từ vựng',
+    },
+    {
+      name: 'VIEW_WORD',
+      description: 'Được phép xem từ vựng',
+    },
+    {
+      name: 'UPDATE_WORD',
+      description: 'Được phép cập nhật từ vựng',
+    },
+    {
+      name: 'DELETE_WORD',
+      description: 'Được phép xóa từ vựng',
+    },
   ];
 
   const result: PermissionDocument[] = [];

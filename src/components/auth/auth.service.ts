@@ -28,44 +28,33 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-    // 1. Kiểm tra email tồn tại
     const existingUser = await this.userModel.findOne({
       email: dto.email,
     });
-  
+
     if (existingUser) {
       throw new BadRequestException('Email đã tồn tại');
     }
-  
+
     // 2. Tìm role USER
     const defaultRole = await this.roleModel.findOne({
       name: 'USER',
     });
-  
+
     if (!defaultRole) {
-      throw new BadRequestException(
-        'Không tìm thấy role USER',
-      );
+      throw new BadRequestException('Không tìm thấy role USER');
     }
-  
-    // 3. Hash password
-    const hashedPassword = await bcrypt.hash(
-      dto.password,
-      10,
-    );
-  
-    // 4. Tạo user
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
     const newUser = await this.userModel.create({
       username: dto.username,
       email: dto.email,
       password: hashedPassword,
-  
-      // QUAN TRỌNG
-      roleId: defaultRole._id,
-  
+
       accessToken: null,
     });
-  
+
     return {
       message: 'Đăng ký thành công',
       user: {
@@ -92,17 +81,26 @@ export class AuthService {
     }
 
     const payload = {
-      sub: user._id,
+      sub: user._id.toString(),
       email: user.email,
       username: user.username,
     };
 
-    const accessToken = await this.jwtService.signAsync(payload);
+    // Access Token
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_SECRET,
+      expiresIn: '1h',
+    });
 
-    // Hash token trước khi lưu DB
-    const hashedAccessToken = await bcrypt.hash(accessToken, 10);
+    // Refresh Token
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: process.env.JWT_REFRESH_SECRET,
+      expiresIn: '7d',
+    });
 
-    user.accessToken = hashedAccessToken;
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+    user.refreshToken = hashedRefreshToken;
 
     await user.save();
 
@@ -111,40 +109,79 @@ export class AuthService {
 
       accessToken,
 
+      refreshToken,
+
       user: {
+        id: user._id,
         username: user.username,
         email: user.email,
       },
     };
   }
 
-  async logout(req: any) {
-    const payload = req.user;
-
-    const token = req.headers.authorization?.split(' ')[1];
-
-    const user = await this.userModel.findById(payload.sub);
+  async logout(userId: string) {
+    const user = await this.userModel.findById(userId);
 
     if (!user) {
-      throw new UnauthorizedException('Người dùng không tồn tại');
+      throw new UnauthorizedException('User không tồn tại');
     }
 
-    if (!user.accessToken) {
-      throw new UnauthorizedException('Bạn chưa đăng nhập');
-    }
-
-    const isValidToken = await bcrypt.compare(token, user.accessToken);
-
-    if (!isValidToken) {
-      throw new UnauthorizedException('Token không hợp lệ');
-    }
-
-    user.accessToken = null;
+    user.refreshToken = null;
 
     await user.save();
 
     return {
-      message: 'Logout thành công',
+      message: 'Đăng xuất thành công',
+    };
+  }
+
+  async refreshToken(refreshToken: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException('Không có refresh token');
+    }
+
+    let payload: any;
+
+    try {
+      payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+    } catch {
+      throw new UnauthorizedException(
+        'Refresh token không hợp lệ hoặc đã hết hạn',
+      );
+    }
+
+    const user = await this.userModel.findById(payload.sub);
+
+    if (!user) {
+      throw new UnauthorizedException('User không tồn tại');
+    }
+
+    if (!user.refreshToken) {
+      throw new UnauthorizedException('Refresh token không hợp lệ');
+    }
+
+    const isValid = await bcrypt.compare(refreshToken, user.refreshToken);
+
+    if (!isValid) {
+      throw new UnauthorizedException('Refresh token không hợp lệ');
+    }
+
+    const newPayload = {
+      sub: user._id.toString(),
+      email: user.email,
+      username: user.username,
+    };
+
+    const newAccessToken = await this.jwtService.signAsync(newPayload, {
+      secret: process.env.JWT_SECRET,
+
+      expiresIn: '1h',
+    });
+
+    return {
+      accessToken: newAccessToken,
     };
   }
 }

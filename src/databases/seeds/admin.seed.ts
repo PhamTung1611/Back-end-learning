@@ -34,8 +34,6 @@ export const seedAdmin = async (
     existingAdmin.roleId = adminRole._id;
 
     await existingAdmin.save();
-
-    console.log('Admin đã tồn tại - cập nhật role ADMIN');
     return;
   }
 
@@ -54,5 +52,4 @@ export const seedAdmin = async (
     accessToken: null,
   });
 
-  console.log('Admin seeded successfully');
 };

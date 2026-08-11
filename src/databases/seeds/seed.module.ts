@@ -17,6 +17,25 @@ import {
   UserSchema,
 } from '../schemas/user.schema';
 
+import {
+  Language,
+  LanguageSchema,
+} from '../schemas/language.schema';
+
+import {
+  Course,
+  CourseSchema,
+} from '../schemas/course.schema';
+
+import {
+  Topic,
+  TopicSchema,
+} from '../schemas/topic.schema';
+
+import {
+  Word,
+  WordSchema,
+} from '../schemas/word.schema';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -43,6 +62,21 @@ import {
       {
         name: User.name,
         schema: UserSchema,
+      },
+      {
+        name: Language.name,
+        schema: LanguageSchema,
+      },
+      {
+        name: Course.name,
+        schema: CourseSchema,
+      },
+      {
+        name: Topic.name,
+        schema: TopicSchema,
+      },{
+        name: Word.name,
+        schema: WordSchema,
       },
     ]),
   ],

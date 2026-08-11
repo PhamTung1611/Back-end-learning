@@ -19,9 +19,33 @@ import {
   UserDocument,
 } from '../schemas/user.schema';
 
+import {
+  Language,
+  LanguageDocument,
+} from '../schemas/language.schema';
+
+import {
+  Course,
+  CourseDocument,
+} from '../schemas/course.schema';
+
+import {
+  Topic,
+  TopicDocument,
+} from '../schemas/topic.schema';
+
+import {
+  Word,
+  WordDocument,
+} from '../schemas/word.schema';
+
 import { seedPermissions } from './permission.seed';
 import { seedRoles } from './role.seed';
 import { seedAdmin } from './admin.seed';
+import { seedLanguages } from './language.seed';
+import { seedCourses } from './course.seed';
+import { seedTopics } from './topic.seed';
+import { seedWords } from './word.seed';
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(
@@ -29,27 +53,42 @@ async function bootstrap() {
   );
 
   try {
-    // 1. Lấy PermissionModel
+
     const permissionModel =
       app.get<Model<PermissionDocument>>(
         getModelToken(Permission.name),
       );
 
-    // 2. Lấy RoleModel
     const roleModel =
       app.get<Model<RoleDocument>>(
         getModelToken(Role.name),
       );
 
-    // 3. Lấy UserModel
     const userModel =
       app.get<Model<UserDocument>>(
         getModelToken(User.name),
       );
 
-    console.log('Starting seed...');
+    const languageModel =
+      app.get<Model<LanguageDocument>>(
+        getModelToken(Language.name),
+      );
 
-    // Phải chạy đúng thứ tự
+    const courseModel =
+      app.get<Model<CourseDocument>>(
+        getModelToken(Course.name),
+      );
+
+    const topicModel =
+      app.get<Model<TopicDocument>>(
+        getModelToken(Topic.name),
+      );
+
+    const wordModel =
+      app.get<Model<WordDocument>>(
+        getModelToken(Word.name),
+      );
+
     await seedPermissions(permissionModel);
 
     await seedRoles(
@@ -62,9 +101,26 @@ async function bootstrap() {
       roleModel,
     );
 
-    console.log('Seed completed successfully');
+    await seedLanguages(languageModel);
+
+    await seedCourses(
+      courseModel,
+      languageModel,
+    );
+
+    await seedTopics(
+      topicModel,
+      courseModel,
+    );
+
+    await seedWords(
+      wordModel,
+      topicModel,
+    );
   } catch (error) {
-    console.error('Seed failed:', error);
+    console.error(error);
+
+    process.exitCode = 1;
   } finally {
     await app.close();
   }

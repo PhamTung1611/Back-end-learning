@@ -19,6 +19,7 @@ export class User {
   @Prop({
     required: true,
     unique: true,
+    lowercase: true
   })
   email: string;
 
@@ -36,6 +37,12 @@ export class User {
 
   @Prop({ type: String, default: null })
   accessToken: string | null;
+
+  @Prop({
+    type: String,
+    default: null,
+  })
+  refreshToken: string | null;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
