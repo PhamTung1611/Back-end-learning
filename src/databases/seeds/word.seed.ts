@@ -5,49 +5,53 @@ import {
 } from '../schemas/word.schema';
 
 import {
-  TopicDocument,
-} from '../schemas/topic.schema';
+  LessonDocument,
+} from '../schemas/lesson.schema';
 
 export const seedWords = async (
   wordModel: Model<WordDocument>,
-  topicModel: Model<TopicDocument>,
+  lessonModel: Model<LessonDocument>,
 ) => {
-  const greetings =
-    await topicModel.findOne({
-      title: 'Greetings',
+  // =========================
+  // TÌM LESSON
+  // =========================
+
+  const basicGreetings =
+    await lessonModel.findOne({
+      title: 'Basic Greetings',
     });
 
-  const family =
-    await topicModel.findOne({
-      title: 'Family',
+  const familyMembers =
+    await lessonModel.findOne({
+      title: 'Family Members',
     });
 
-  const food =
-    await topicModel.findOne({
-      title: 'Food',
+  const basicFood =
+    await lessonModel.findOne({
+      title: 'Basic Food',
     });
 
-  if (!greetings) {
+  if (!basicGreetings) {
     throw new Error(
-      'Không tìm thấy Topic Greetings',
+      'Không tìm thấy Lesson Basic Greetings',
     );
   }
 
-  if (!family) {
+  if (!familyMembers) {
     throw new Error(
-      'Không tìm thấy Topic Family',
+      'Không tìm thấy Lesson Family Members',
     );
   }
 
-  if (!food) {
+  if (!basicFood) {
     throw new Error(
-      'Không tìm thấy Topic Food',
+      'Không tìm thấy Lesson Basic Food',
     );
   }
 
   const words = [
     // =========================
-    // GREETINGS
+    // BASIC GREETINGS
     // =========================
 
     {
@@ -59,7 +63,7 @@ export const seedWords = async (
       example: 'Hello, my name is Tung.',
       exampleMeaning:
         'Xin chào, tôi tên là Tùng.',
-      topicId: greetings._id,
+      lessonId: basicGreetings._id,
       order: 1,
       isActive: true,
     },
@@ -73,7 +77,7 @@ export const seedWords = async (
       example: 'Hi, how are you?',
       exampleMeaning:
         'Chào, bạn khỏe không?',
-      topicId: greetings._id,
+      lessonId: basicGreetings._id,
       order: 2,
       isActive: true,
     },
@@ -87,7 +91,7 @@ export const seedWords = async (
       example: 'Goodbye, see you tomorrow.',
       exampleMeaning:
         'Tạm biệt, hẹn gặp bạn ngày mai.',
-      topicId: greetings._id,
+      lessonId: basicGreetings._id,
       order: 3,
       isActive: true,
     },
@@ -101,7 +105,7 @@ export const seedWords = async (
       example: 'Thanks for your help.',
       exampleMeaning:
         'Cảm ơn vì sự giúp đỡ của bạn.',
-      topicId: greetings._id,
+      lessonId: basicGreetings._id,
       order: 4,
       isActive: true,
     },
@@ -115,13 +119,13 @@ export const seedWords = async (
       example: 'Welcome to our class.',
       exampleMeaning:
         'Chào mừng đến với lớp học của chúng tôi.',
-      topicId: greetings._id,
+      lessonId: basicGreetings._id,
       order: 5,
       isActive: true,
     },
 
     // =========================
-    // FAMILY
+    // FAMILY MEMBERS
     // =========================
 
     {
@@ -133,7 +137,7 @@ export const seedWords = async (
       example: 'My father is a teacher.',
       exampleMeaning:
         'Bố tôi là giáo viên.',
-      topicId: family._id,
+      lessonId: familyMembers._id,
       order: 1,
       isActive: true,
     },
@@ -147,7 +151,7 @@ export const seedWords = async (
       example: 'My mother is at home.',
       exampleMeaning:
         'Mẹ tôi đang ở nhà.',
-      topicId: family._id,
+      lessonId: familyMembers._id,
       order: 2,
       isActive: true,
     },
@@ -161,7 +165,7 @@ export const seedWords = async (
       example: 'I have one brother.',
       exampleMeaning:
         'Tôi có một người anh/em trai.',
-      topicId: family._id,
+      lessonId: familyMembers._id,
       order: 3,
       isActive: true,
     },
@@ -175,13 +179,13 @@ export const seedWords = async (
       example: 'My sister is a student.',
       exampleMeaning:
         'Chị/em gái tôi là học sinh.',
-      topicId: family._id,
+      lessonId: familyMembers._id,
       order: 4,
       isActive: true,
     },
 
     // =========================
-    // FOOD
+    // BASIC FOOD
     // =========================
 
     {
@@ -193,7 +197,7 @@ export const seedWords = async (
       example: 'I eat rice every day.',
       exampleMeaning:
         'Tôi ăn cơm mỗi ngày.',
-      topicId: food._id,
+      lessonId: basicFood._id,
       order: 1,
       isActive: true,
     },
@@ -207,7 +211,7 @@ export const seedWords = async (
       example: 'I drink water.',
       exampleMeaning:
         'Tôi uống nước.',
-      topicId: food._id,
+      lessonId: basicFood._id,
       order: 2,
       isActive: true,
     },
@@ -217,7 +221,7 @@ export const seedWords = async (
     await wordModel.findOneAndUpdate(
       {
         term: word.term,
-        topicId: word.topicId,
+        lessonId: word.lessonId,
       },
       {
         $set: word,
@@ -229,5 +233,7 @@ export const seedWords = async (
     );
   }
 
-  console.log('Words seeded successfully');
+  console.log(
+    'Words seeded successfully',
+  );
 };

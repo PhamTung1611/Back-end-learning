@@ -45,7 +45,7 @@ import {
   
     @IsMongoId()
     @IsOptional()
-    topicId?: string;
+    lessonId: string;
   
     @IsNumber()
     @IsOptional()

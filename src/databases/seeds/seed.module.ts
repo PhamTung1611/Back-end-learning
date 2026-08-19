@@ -33,6 +33,12 @@ import {
 } from '../schemas/topic.schema';
 
 import {
+  Lesson,
+  LessonSchema,
+} from '../schemas/lesson.schema';
+
+
+import {
   Word,
   WordSchema,
 } from '../schemas/word.schema';
@@ -74,7 +80,12 @@ import {
       {
         name: Topic.name,
         schema: TopicSchema,
-      },{
+      },
+      {
+        name: Lesson.name,
+        schema: LessonSchema,
+      },
+      {
         name: Word.name,
         schema: WordSchema,
       },

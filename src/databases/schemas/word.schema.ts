@@ -65,10 +65,11 @@ import {
   
     @Prop({
       type: Types.ObjectId,
-      ref: 'Topic',
+      ref: 'Lesson',
       required: true,
+      index: true,
     })
-    topicId: Types.ObjectId;
+    lessonId: Types.ObjectId;
   
     @Prop({
       default: 0,

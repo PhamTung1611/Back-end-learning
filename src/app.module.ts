@@ -13,6 +13,9 @@ import {
 } from './components/course/course.module';
 import { TopicModule } from './components/topic/topic.module';
 import { WordModule } from './components/word/word.module';
+import { LessonModule } from './components/lesson/lesson.module';
+import { UserCourseModule } from './components/user-course/user-course.module';
+import { UserLessonModule } from './components/user-lesson/user-lesson.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,14 +23,17 @@ import { WordModule } from './components/word/word.module';
     }),
 
     MongooseModule.forRoot(process.env.MONGO_URI!),
-
     AuthModule,
     UsersModule,
     PermissionModule,
     RoleModule,
     CourseModule,
     TopicModule,
+    LessonModule,
     WordModule,
+    UserCourseModule,
+    UserLessonModule,
+    UserLessonModule,
   ],
 
   controllers: [AppController],

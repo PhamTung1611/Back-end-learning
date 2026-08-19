@@ -23,37 +23,40 @@ export class WordController {
 
   @Post()
   @Permissions('CREATE_WORD')
-  create(@Body() dto: CreateWordDto) {
+  async create(@Body() dto: CreateWordDto) {
     return this.wordService.create(dto);
   }
 
   @Get()
   @Permissions('VIEW_WORD')
-  findAll() {
+  async findAll() {
     return this.wordService.findAll();
   }
 
-  @Get('topic/:topicId')
-  @Permissions('VIEW_WORD')
-  findByTopic(@Param('topicId') topicId: string) {
-    return this.wordService.findByTopic(topicId);
+  @Get('lesson/:lessonId')
+  @Permissions('VIEW_LESSON')
+  async findByLesson(
+    @Param('lessonId')
+    lessonId: string,
+  ) {
+    return this.wordService.findByLesson(lessonId);
   }
 
   @Get(':id')
   @Permissions('VIEW_WORD')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.wordService.findOne(id);
   }
 
   @Patch(':id')
   @Permissions('UPDATE_WORD')
-  update(@Param('id') id: string, @Body() dto: UpdateWordDto) {
+  async update(@Param('id') id: string, @Body() dto: UpdateWordDto) {
     return this.wordService.update(id, dto);
   }
 
   @Delete(':id')
   @Permissions('DELETE_WORD')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.wordService.remove(id);
   }
 }

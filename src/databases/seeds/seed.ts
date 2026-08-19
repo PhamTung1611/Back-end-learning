@@ -35,61 +35,97 @@ import {
 } from '../schemas/topic.schema';
 
 import {
+  Lesson,
+  LessonDocument,
+} from '../schemas/lesson.schema';
+
+import {
   Word,
   WordDocument,
 } from '../schemas/word.schema';
 
+// =============================
+// SEED FUNCTIONS
+// =============================
+
 import { seedPermissions } from './permission.seed';
 import { seedRoles } from './role.seed';
 import { seedAdmin } from './admin.seed';
+
 import { seedLanguages } from './language.seed';
 import { seedCourses } from './course.seed';
 import { seedTopics } from './topic.seed';
+import { seedLessons } from './lesson.seed';
 import { seedWords } from './word.seed';
 
+
 async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(
-    SeedModule,
-  );
+
+  const app =
+    await NestFactory.createApplicationContext(
+      SeedModule,
+    );
 
   try {
-
     const permissionModel =
       app.get<Model<PermissionDocument>>(
-        getModelToken(Permission.name),
+        getModelToken(
+          Permission.name,
+        ),
       );
 
     const roleModel =
       app.get<Model<RoleDocument>>(
-        getModelToken(Role.name),
+        getModelToken(
+          Role.name,
+        ),
       );
 
     const userModel =
       app.get<Model<UserDocument>>(
-        getModelToken(User.name),
+        getModelToken(
+          User.name,
+        ),
       );
 
     const languageModel =
       app.get<Model<LanguageDocument>>(
-        getModelToken(Language.name),
+        getModelToken(
+          Language.name,
+        ),
       );
 
     const courseModel =
       app.get<Model<CourseDocument>>(
-        getModelToken(Course.name),
+        getModelToken(
+          Course.name,
+        ),
       );
 
     const topicModel =
       app.get<Model<TopicDocument>>(
-        getModelToken(Topic.name),
+        getModelToken(
+          Topic.name,
+        ),
+      );
+
+    const lessonModel =
+      app.get<Model<LessonDocument>>(
+        getModelToken(
+          Lesson.name,
+        ),
       );
 
     const wordModel =
       app.get<Model<WordDocument>>(
-        getModelToken(Word.name),
+        getModelToken(
+          Word.name,
+        ),
       );
 
-    await seedPermissions(permissionModel);
+    await seedPermissions(
+      permissionModel,
+    );
 
     await seedRoles(
       roleModel,
@@ -101,7 +137,9 @@ async function bootstrap() {
       roleModel,
     );
 
-    await seedLanguages(languageModel);
+    await seedLanguages(
+      languageModel,
+    );
 
     await seedCourses(
       courseModel,
@@ -113,17 +151,36 @@ async function bootstrap() {
       courseModel,
     );
 
-    await seedWords(
-      wordModel,
+    await seedLessons(
+      lessonModel,
       topicModel,
     );
+
+    await seedWords(
+      wordModel,
+      lessonModel,
+    );
+
+
+    console.log(
+      '✅ Seed toàn bộ dữ liệu thành công',
+    );
+
   } catch (error) {
-    console.error(error);
+
+    console.error(
+      '❌ Seed lỗi:',
+      error,
+    );
 
     process.exitCode = 1;
+
   } finally {
+
     await app.close();
+
   }
 }
+
 
 bootstrap();

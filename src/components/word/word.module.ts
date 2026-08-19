@@ -1,18 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-
 import {
   Word,
   WordSchema,
 } from '../../databases/schemas/word.schema';
-
-import {
-  Topic,
-  TopicSchema,
-} from '../../databases/schemas/topic.schema';
-
 import { WordController } from './word.controller';
 import { WordService } from './word.service';
+import { Lesson, LessonSchema } from 'src/databases/schemas/lesson.schema';
 
 @Module({
   imports: [
@@ -22,8 +16,8 @@ import { WordService } from './word.service';
         schema: WordSchema,
       },
       {
-        name: Topic.name,
-        schema: TopicSchema,
+        name: Lesson.name,
+        schema: LessonSchema,
       },
     ]),
   ],

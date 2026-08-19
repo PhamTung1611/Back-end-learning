@@ -24,9 +24,10 @@ export class User {
   email: string;
 
   @Prop({
-    required: true,
+    type: String,
+    default: null,
   })
-  password: string;
+  password?: string | null;
 
   @Prop({
     type: Types.ObjectId,

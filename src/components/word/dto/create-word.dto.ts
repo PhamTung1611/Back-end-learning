@@ -45,7 +45,7 @@ import {
     imageUrl?: string;
   
     @IsMongoId()
-    topicId: string;
+    lessonId: string;
   
     @IsNumber()
     @IsOptional()
