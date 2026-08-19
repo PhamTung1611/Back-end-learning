@@ -8,15 +8,18 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-
 import { LessonService } from './lesson.service';
-
 import { CreateLessonDto } from './dto/create-lesson.dto';
-
 import { UpdateLessonDto } from './dto/update-lesson.dto';
-
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import {
+  ApiBearerAuth,
+  ApiTags,
+} from '@nestjs/swagger';
 
+
+@ApiTags('User Courses')
+@ApiBearerAuth()
 @Controller('lessons')
 @UseGuards(JwtAuthGuard)
 export class LessonController {
